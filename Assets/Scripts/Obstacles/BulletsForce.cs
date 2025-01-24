@@ -6,7 +6,9 @@ public class BulletsForce : MonoBehaviour
 {
     [SerializeField]
     private float  forceScale;
-   
+    [SerializeField]
+    private bool piercing;
+
     private Transform origin;
     [SerializeField]
     private float lifeTime;
@@ -26,5 +28,20 @@ public class BulletsForce : MonoBehaviour
         yield return new WaitForSeconds(lifeTime);
 
         Destroy(this.gameObject);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+    
+        if (collision.CompareTag("Player"))
+        {
+            Debug.Log("morreu");
+          if(!piercing)
+          {
+                Destroy(this.gameObject);
+          }
+            
+
+        }
     }
 }

@@ -18,10 +18,21 @@ public class BubbleCollider : MonoBehaviour
 
 
     private Rigidbody2D rb;
+    private void OnDestroy()
+    {
+        OnTakeDamage-= OnTakeDamage;
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         Death = false;
+        OnTakeDamage += OnTakeDamage;
+    }
+
+    void TakeDamage()
+    {
+        OnTakeDamage?.Invoke(true);
+        this.gameObject.SetActive(false);
     }
 
     
@@ -37,6 +48,13 @@ public class BubbleCollider : MonoBehaviour
             knockbackDirection.Normalize();
 
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+        }
+        if (collision.CompareTag("Obstacle"))
+        {
+            Debug.Log("morreu");
+            TakeDamage();
+           // Destroy(collision.gameObject);
+          
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
